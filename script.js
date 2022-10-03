@@ -1,14 +1,132 @@
 // Assignment Code
-var generateBtn = document.querySelector("#generate");
+var generateBtn = document.querySelector("#generate"); //This line of code locates our button using the generate id
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+//This is our main function that will generate our password 
+function generatePassword(){
+  //Lines 9-12 initiates our variables and our arrays with our special characters
+  var message = "";
+  var passwordBuilder = "";
+  var lowerCase = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+  var specialCharacters = ["!", "#", "$", "%", "&", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "]", "^", "_", "`", "{", "}", "|", "~"];
+  var upperCase = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+  var numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-  passwordText.value = password;
+  //Boolean variables used to verify if the user wants this type of character. All will start as false.
+  var ifLowerCase = false;
+  var ifSpecialCharacters = false;
+  var ifUpperCase = false;
+  var ifNumbers = false
 
+  //Display a prompt so the user can enter length of password. If the password is less than 8 characters or more than 128 the user is prompted to try again.
+  var numOfCharacters = prompt("Please enter a number between 8 and 128 for password length"); //prompt gets user input
+  if (numOfCharacters < 8){
+    alert("You entered " + numOfCharacters + "." + "\nPlease select a number equal to or greater than 8.");
+    return "Click Generate Password again";
+  }
+  if (numOfCharacters > 128){
+    alert("You entered " + numOfCharacters + "." + "\nPlease select a number equal to or less than 128.");
+    return "Click Generate Password again";
+  }
+  message = message.concat("Length: " + numOfCharacters) //confirms length
+
+  //Confirms what kind of characters the user wants. Displays a message at the end confirming selection made.
+  if(confirm("Include lowercase characters? Click 'Cancel' if no.") == true){
+    ifLowerCase = true;
+    message = message.concat("\nLowercase letters selected.");
+  }
+  else{
+    ifLowerCase = false;
+    message = message.concat("\nLowercase letters NOT selected.");
+  }
+  if (confirm("Include special characters? Click 'Cancel' if no.") == true){
+    ifSpecialCharacters = true;
+    message = message.concat("\nSpecial characters selected.");
+  }
+  else{
+    ifSpecialCharacters = false;
+    message = message.concat("\nSpecial characters NOT selected.");
+  }
+  if (confirm("Include uppercase letters? Click 'Cancel' if no.") == true){
+    ifUpperCase = true;
+    message = message.concat("\nUpper case letters selected.");
+  }
+  else{
+    ifUpperCase = false;
+    message = message.concat("\nUppercase letters NOT selected.");
+  }
+  if (confirm("Include numbers? Click 'Cancel' if no.") == true){
+    ifNumbers = true;
+    message = message.concat("\nNumbers selected.");
+  }
+  else{
+    ifNumbers = false;
+    message = message.concat("\nLNumbers NOT selected.");
+  }
+
+  alert(message); //display a message with confirmation of length and character selection
+
+ //for loop to generate our password. Based on how long the user wants the password
+ for (var i = 0; i < numOfCharacters; i++){
+    var typeOfCharacter = Math.floor(Math.random() * 4); //num bewteen 0 and 3 to randomize what type of character is added
+    //if statement to check to see if at least on type of character was chosen. If not displays a message.
+    if ((ifLowerCase == false) && (ifSpecialCharacters == false) && (ifUpperCase == false) && (ifNumbers == false)){
+      alert("You must have at least one type of character. Click Generate Password again.");
+      return "Click Generate Password again";
+    }
+    //switch statment takes our random number we created to randomly add a type of character. 0 is lower case letters. 1 is special characters. 2 is capital letters. 3 are numbers.
+    switch (typeOfCharacter){
+      case 0:
+        if (ifLowerCase == true){ //checks to see if the user selected this type of character
+          var lowerIndex = Math.floor(Math.random() * lowerCase.length); //gets a random character from the alphabet array
+          var getText = lowerCase[lowerIndex]; //stores the random character in a variable
+          passwordBuilder = passwordBuilder.concat(getText);//adds the character to our passwork
+        }else if (ifLowerCase == false){ //if the user did not want this type of character nothing is added but we subtract 1 from our loop counter so we only count up when we add a character
+          i--;
+        }
+          break; //breaks out of the switch and to the next iteration of our loop
+      //the rest of the cases follow the same logic
+      case 1:
+        if (ifSpecialCharacters == true){
+          var specialIndex = Math.floor(Math.random() * specialCharacters.length);
+          var getText = specialCharacters[specialIndex];
+          passwordBuilder = passwordBuilder.concat(getText);
+        }else if (ifSpecialCharacters == false){
+          i--;
+        }
+        break;
+      case 2:
+        if (ifUpperCase == true){
+          var upperIndex = Math.floor(Math.random() * upperCase.length);
+          var getText = upperCase[upperIndex];
+          passwordBuilder = passwordBuilder.concat(getText);
+        }else if (ifUpperCase == false){
+          i--;
+        }
+        break;
+      case 3:
+        if (ifNumbers == true){
+          var numIndex = Math.floor(Math.random() * numbers.length);
+          var getText = numbers[numIndex];
+          passwordBuilder = passwordBuilder.concat(getText);
+        } else if (ifNumbers == false){
+          i--;
+        }
+        break;
+      
+       
+    }
+    }
+    return passwordBuilder; //return our password after our loop is finished
+}
+
+
+//this function gets our generated password and uses it as text
+function writePassword(){
+    var password = generatePassword(); //calls the generate password function and stores it in the password variable
+    var passwordText = document.querySelector("#password"); //locate our text area based on the id of password
+
+    passwordText.value = password; //populates our text area by storing what we have in password variable in our located passwordText variable
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", writePassword); //use eventListener function on our button, calls writePassword function on click
