@@ -21,11 +21,11 @@ function generatePassword(){
   var numOfCharacters = prompt("Please enter a number between 8 and 128 for password length"); //prompt gets user input
   if (numOfCharacters < 8){
     alert("You entered " + numOfCharacters + "." + "\nPlease select a number equal to or greater than 8.");
-    return "Click Generate Password again";
+    return "Click Generate Password";
   }
   if (numOfCharacters > 128){
     alert("You entered " + numOfCharacters + "." + "\nPlease select a number equal to or less than 128.");
-    return "Click Generate Password again";
+    return "Click Generate Password";
   }
   message = message.concat("Length: " + numOfCharacters) //confirms length
 
@@ -63,28 +63,28 @@ function generatePassword(){
     message = message.concat("\nLNumbers NOT selected.");
   }
 
-  alert(message); //display a message with confirmation of length and character selection
+  alert(message); //Displays a message with confirmation of length and character selection
 
- //for loop to generate our password. Based on how long the user wants the password
+ //"for" loop to generate our password. Based on password length user chooses/
  for (var i = 0; i < numOfCharacters; i++){
-    var typeOfCharacter = Math.floor(Math.random() * 4); //num bewteen 0 and 3 to randomize what type of character is added
-    //if statement to check to see if at least on type of character was chosen. If not displays a message.
+    var typeOfCharacter = Math.floor(Math.random() * 4); //Number bewteen 0 and 3 to randomize what type of character is added
+    //"if" statement to verify at least one type of character was selected. A message is displayed if not.
     if ((ifLowerCase == false) && (ifSpecialCharacters == false) && (ifUpperCase == false) && (ifNumbers == false)){
-      alert("You must have at least one type of character. Click Generate Password again.");
-      return "Click Generate Password again";
+      alert("Please select AT LEAST one type of character.");
+      return "Click Generate Password";
     }
-    //switch statment takes our random number we created to randomly add a type of character. 0 is lower case letters. 1 is special characters. 2 is capital letters. 3 are numbers.
+    //"switch" statment takes the random number created to randomly add a type of character. 0 = lowercase letters. 1 = special characters. 2 = uppercase letters. 3 = numbers.
     switch (typeOfCharacter){
       case 0:
         if (ifLowerCase == true){ //checks to see if the user selected this type of character
-          var lowerIndex = Math.floor(Math.random() * lowerCase.length); //gets a random character from the alphabet array
+          var lowerIndex = Math.floor(Math.random() * lowerCase.length); //gets a random character from the "lowercase" array
           var getText = lowerCase[lowerIndex]; //stores the random character in a variable
-          passwordBuilder = passwordBuilder.concat(getText);//adds the character to our passwork
-        }else if (ifLowerCase == false){ //if the user did not want this type of character nothing is added but we subtract 1 from our loop counter so we only count up when we add a character
+          passwordBuilder = passwordBuilder.concat(getText);//adds the character to the password
+        }else if (ifLowerCase == false){ //if the user did not want this type of character nothing is added; it subtracts 1 from the loop counter so it only counts to when a character is added
           i--;
         }
           break; //breaks out of the switch and to the next iteration of our loop
-      //the rest of the cases follow the same logic
+      //Following cases follow the same logic
       case 1:
         if (ifSpecialCharacters == true){
           var specialIndex = Math.floor(Math.random() * specialCharacters.length);
@@ -116,17 +116,17 @@ function generatePassword(){
        
     }
     }
-    return passwordBuilder; //return our password after our loop is finished
+    return passwordBuilder; //return the password after the loop is finished
 }
 
 
-//this function gets our generated password and uses it as text
+//This function gets the generated password and uses it as text
 function writePassword(){
-    var password = generatePassword(); //calls the generate password function and stores it in the password variable
-    var passwordText = document.querySelector("#password"); //locate our text area based on the id of password
+    var password = generatePassword(); //Calls the generate password function and stores it in the password variable
+    var passwordText = document.querySelector("#password"); //Locates the text area based on the id of password
 
-    passwordText.value = password; //populates our text area by storing what we have in password variable in our located passwordText variable
+    passwordText.value = password; //Populates the text area by storing what variables that are in the password in the located passwordText variable
 }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword); //use eventListener function on our button, calls writePassword function on click
+generateBtn.addEventListener("click", writePassword); //Use eventListener function on the button, calls writePassword function on click
