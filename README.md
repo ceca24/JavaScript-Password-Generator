@@ -1,4 +1,4 @@
-# JavaScript-Password-Generator
+# Randomized-Password-Generator
 
 ##Description
 
